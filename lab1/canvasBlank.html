@@ -17,23 +17,28 @@
 
   <body>
 
-    <canvas id="canvasOne"></canvas>
+    <canvas id="canvasOne" width="400" height="300">
+
+    </canvas>
 
     <script type="text/javascript">
+
+    // Gets a handle to the element with id canvasOne.
     var c = document.getElementById("canvasOne");
+
+    // Set the canvas up for drawing in 2D.
     var ctx = c.getContext("2d");
 
-    //canvas outline 
-    ctx.strokeRect(20, 20, 150, 100);
+    // Set the fill colour to pink.
+    ctx.fillStyle = "pink";
 
-
-		// Gets a handle to the element with id canvasOne.
-		
-		// Set the canvas up for drawing in 2D.
-		
-		// Set the fill colour to bright red.
-		
-		// Create a filled rectangle 
+    // Create a filled rectangle
+    ctx.fillRect(40, 40, 150, 100); 
+    
+    ctx.font = "25px Arial";
+    ctx.fillStyle = "blue";
+    ctx.fillText("Gracia",10,30);
+    
 		
     </script>
 
