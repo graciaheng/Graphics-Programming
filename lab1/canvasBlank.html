@@ -17,7 +17,7 @@
 
   <body>
 
-    <canvas id="canvasOne" width="400" height="300">
+    <canvas id="canvasOne" width="450" height="600">
 
     </canvas>
 
@@ -35,9 +35,18 @@
     // Create a filled rectangle
     ctx.fillRect(40, 40, 150, 100); 
     
+    //draws name into the canvas
     ctx.font = "25px Arial";
     ctx.fillStyle = "blue";
     ctx.fillText("Gracia",10,30);
+
+    ctx.beginPath();
+    //sets the starting point
+    ctx.moveTo(100,200);
+    ctx.lineTo(50,300);
+    ctx.lineTo(150,300);
+    ctx.lineTo(100,200); //goes back to starting point
+    ctx.stroke();
     
 		
     </script>
