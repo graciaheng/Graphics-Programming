@@ -9,8 +9,7 @@
     <style type="text/css">
       canvas {
         border: 2px solid black;
-        width: 200px;
-        height: 500px;
+
       }
 	
     </style>
@@ -22,6 +21,13 @@
     <canvas id="canvasOne"></canvas>
 
     <script type="text/javascript">
+    var c = document.getElementById("canvasOne");
+    var ctx = c.getContext("2d");
+
+    //canvas outline 
+    ctx.strokeRect(20, 20, 150, 100);
+
+
 		// Gets a handle to the element with id canvasOne.
 		
 		// Set the canvas up for drawing in 2D.
