@@ -35,7 +35,7 @@
       // The vertical location of the ball.
       var y = 10;
       var ySpeed = 3;
-      var radius = 10;
+      var radius = 25;
 
       // A function to repeat every time the animation loops.
       function repeatme() {
@@ -51,9 +51,8 @@
 
         //if the ball hits the bottom of the canvas
         if (y >= 300 - radius){
-          //stop the ball
-          //ySpeed = ySpeed * -1;
-          ySpeed = 0;
+          //ball moves up
+          ySpeed = ySpeed * -1;
         } 
    
         window.requestAnimationFrame(repeatme);
