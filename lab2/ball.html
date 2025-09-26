@@ -33,7 +33,9 @@
       var ctx = canvas.getContext("2d");
       
       // The vertical location of the ball.
+      var x = 50;
       var y = 30;
+      var xSpeed = 3;
       var ySpeed = 3;
       var radius = 20;
 
@@ -43,9 +45,12 @@
 
         // Draw the ball (stroked, not filled).
         ctx.beginPath();
-        ctx.arc(50, y, radius, 0, 2 * Math.PI);
+        ctx.arc(x, y, radius, 0, 2 * Math.PI);
         ctx.stroke();
         
+        // Update the x location.
+        x += xSpeed;
+
         // Update the y location.
         y += ySpeed;
 
@@ -60,6 +65,15 @@
           ySpeed = ySpeed * -1;
         }
 
+        //if ball hits right side of canvas
+        if (x >= 400 - radius) {
+          xSpeed = xSpeed * -1;
+        }
+
+        //if ball hits left side of canvas
+        if (x <= 0 + radius) {
+          xSpeed = xSpeed * -1;
+        }
 
    
         window.requestAnimationFrame(repeatme);
