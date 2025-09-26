@@ -33,9 +33,9 @@
       var ctx = canvas.getContext("2d");
       
       // The vertical location of the ball.
-      var y = 10;
+      var y = 30;
       var ySpeed = 3;
-      var radius = 25;
+      var radius = 20;
 
       // A function to repeat every time the animation loops.
       function repeatme() {
@@ -54,6 +54,13 @@
           //ball moves up
           ySpeed = ySpeed * -1;
         } 
+
+        //if ball hits the roof of the canvas
+        if (y <= 0 + radius) {
+          ySpeed = ySpeed * -1;
+        }
+
+
    
         window.requestAnimationFrame(repeatme);
       }
