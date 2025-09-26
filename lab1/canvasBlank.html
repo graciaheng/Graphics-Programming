@@ -17,7 +17,7 @@
 
   <body>
 
-    <canvas id="canvasOne" width="450" height="600">
+    <canvas id="canvasOne" width="600" height="600">
 
     </canvas>
 
@@ -81,6 +81,32 @@
 
     ctx.stroke();
 
+    //Pac Man
+    cx = 475;
+    cy = 90;
+    r = 50;
+    angle1 = 5*Math.PI/4;
+    angle2 = 7*Math.PI/4;
+    ctx.beginPath();
+    //false -clockwise //true -anticlockwise
+    ctx.arc(cx,cy,r,angle1,angle2,true);
+
+    ctx.moveTo(cx,cy);
+
+    //add the value of the x-value and y in the center
+    x1 = (r*Math.cos(angle1))+cx;
+    y1 = (r*Math.sin(angle1))+cy;
+
+    ctx.lineTo(x1,y1);
+    ctx.moveTo(cx,cy); //goes back to center of it
+
+    x2 = (r*Math.cos(angle1))+cx;
+    y2 = (r*Math.sin(angle2))+cy;
+    ctx.lineTo(x2,y2);
+    ctx.strokeStyle = "rgb(200,100,100)";
+    //ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.stroke();
     </script>
 
   </body>
