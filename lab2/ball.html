@@ -32,50 +32,65 @@
       // Get a 2D context for the canvas.
       var ctx = canvas.getContext("2d");
       
-      // The vertical location of the ball.
-      var x = 50;
-      var y = 30;
-      var xSpeed = 3;
-      var ySpeed = 3;
-      var radius = 20;
+      class Ball {
+
+        constructor(x, y, xSpeed, ySpeed, radius) {
+          //attributes
+          this.x = x;
+          this.y = y;
+          this.xSpeed = xSpeed;
+          this.ySpeed = ySpeed;
+          this.radius = radius;
+        }
+
+        //draw ball
+        drawBall(){
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+          ctx.stroke();
+        }
+
+        //move method
+        moveBall(){
+          // Update the x location.
+          this.x += this.xSpeed;
+
+          // Update the y location.
+          this.y += this.ySpeed;
+
+          //if the ball hits the bottom of the canvas
+          if (this.y >= 300 - this.radius){
+            //ball moves up
+            this.ySpeed = this.ySpeed * -1;
+          } 
+
+          //if ball hits the roof of the canvas
+          if (this.y <= 0 + this.radius) {
+            this.ySpeed = this.ySpeed * -1;
+          }
+
+          //if ball hits right side of canvas
+          if (this.x >= 400 - this.radius) {
+            this.xSpeed = this.xSpeed * -1;
+          }
+
+          //if ball hits left side of canvas
+          if (this.x <= 0 + this.radius) {
+            this.xSpeed = this.xSpeed * -1;
+          }
+        }
+
+      }
+
+      var b1 = new Ball(50, 30, 3, 3, 20);
 
       // A function to repeat every time the animation loops.
       function repeatme() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Draw the ball (stroked, not filled).
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 0, 2 * Math.PI);
-        ctx.stroke();
-        
-        // Update the x location.
-        x += xSpeed;
+        b1.drawBall();
+        b1.moveBall();
 
-        // Update the y location.
-        y += ySpeed;
-
-        //if the ball hits the bottom of the canvas
-        if (y >= 300 - radius){
-          //ball moves up
-          ySpeed = ySpeed * -1;
-        } 
-
-        //if ball hits the roof of the canvas
-        if (y <= 0 + radius) {
-          ySpeed = ySpeed * -1;
-        }
-
-        //if ball hits right side of canvas
-        if (x >= 400 - radius) {
-          xSpeed = xSpeed * -1;
-        }
-
-        //if ball hits left side of canvas
-        if (x <= 0 + radius) {
-          xSpeed = xSpeed * -1;
-        }
-
-   
         window.requestAnimationFrame(repeatme);
       }
 
