@@ -46,6 +46,7 @@
           this.angle1 = angle1;
           this.angle2 = angle2;
           this.angle = 0;
+          this.rotation = 0.05;
         }
 
         //draw ball
@@ -91,27 +92,31 @@
           // Update the y location.
           this.y += this.ySpeed;
 
-          this.angle += 0.05;
+          this.angle += this.rotation;
 
           //if the ball hits the bottom of the canvas
           if (this.y >= 300 - this.radius){
             //ball moves up
             this.ySpeed = this.ySpeed * -1;
+            this.angle *= -1;
           } 
 
           //if ball hits the roof of the canvas
           if (this.y <= 0 + this.radius) {
             this.ySpeed = this.ySpeed * -1;
+            this.angle *= -1;
           }
 
           //if ball hits right side of canvas
           if (this.x >= 400 - this.radius) {
             this.xSpeed = this.xSpeed * -1;
+            this.angle *= -1;
           }
 
           //if ball hits left side of canvas
           if (this.x <= 0 + this.radius) {
             this.xSpeed = this.xSpeed * -1;
+            this.angle *= -1;
           }
         }
 
