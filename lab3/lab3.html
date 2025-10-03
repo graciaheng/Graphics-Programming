@@ -3,6 +3,8 @@
 
 <html>
 
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+
   <head>
     <meta charset="UTF-8">
     <title>Canvas</title>
@@ -153,6 +155,37 @@
 
       // Get the animation going.
       repeatme();
+
+      //keypresses with jQuery
+	  $(document.body).on('keydown', function(e) {
+			console.log(e.which);
+			switch (e.which) {
+			// key code for left arrow
+			case 37:
+                rect1.x--;
+				console.log('left arrow key pressed!');
+				break;
+
+			// key code for right arrow
+			case 39:
+                rect1.x++;
+				console.log('right arrow key pressed!');
+				break;
+
+            //key code for up arrow
+            case 38:
+                rect1.y--;
+				console.log('left arrow key pressed!');
+				break;
+
+			// key code for down arrow
+			case 40:
+                rect1.y++;
+				console.log('right arrow key pressed!');
+				break;
+			}
+		});
+
     </script>
 
   </body>
