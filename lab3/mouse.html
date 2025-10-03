@@ -28,14 +28,30 @@
       var ctx = canvas.getContext("2d");
       // Make the fill style red.
       ctx.fillStyle = "rgb(255, 0, 0)";
+
+      //calculate position of the canvas DOM element on the page
+      var canvasPosition = {
+        x: canvas.offsetLeft,
+        y: canvas.offsetTop
+      }
+
       
-      canvas.addEventListener("click", function(event) { 
+      
+      canvas.addEventListener("click", function(event) {
+
+        var mouse = {
+          x: event.clientX - canvasPosition.x,
+          y: event.clientY - canvasPosition.y
+        }
+        console.log(mouse);
+
         ctx.beginPath();
-        ctx.arc(event.clientX, event.clientY, 6, 0, 2 * Math.PI);
+        ctx.arc(mouse.x, mouse.y, 6, 0, 2 * Math.PI);
         ctx.fill();
         
         noClicks += 1;
         console.log(noClicks);
+
       });
     </script>
 
