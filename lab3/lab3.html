@@ -116,24 +116,28 @@
 
           //if the ball hits the bottom of the canvas
           if (this.y >= 300 - this.radius){
-            this.ySpeed = this.ySpeed * -1;    //ball moves up
-            this.angle *= -0.8;                //lose 0.2 speed
+            this.y = 300 - this.radius; //keep the ball from staying within the canvas
+            this.ySpeed *= -0.9;    //ball moves up only 90%
+            this.angle *= -1;
           } 
 
           //if ball hits the roof of the canvas
           if (this.y <= 0 + this.radius) {
-            this.ySpeed = this.ySpeed * -1;
-            this.angle *= -0.8;
+            this.y = this.radius;
+            this.ySpeed *= -0.9;
+            this.angle *= -1;
           }
 
           //if ball hits right side of canvas
           if (this.x >= 400 - this.radius) {
+            this.x = 400 - this.radius;
             this.xSpeed = this.xSpeed * -1;
             this.angle *= -1;
           }
 
           //if ball hits left side of canvas
           if (this.x <= 0 + this.radius) {
+            this.x = this.radius;
             this.xSpeed = this.xSpeed * -1;
             this.angle *= -1;
           }
@@ -220,7 +224,7 @@
 
       //key code for -
       case 189:
-        b1.rotation -= 0.01;
+        b1.rotation -= 0.01; //update speed slowly
         console.log('- arrow key pressed!');
         break;
 			}
