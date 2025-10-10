@@ -28,6 +28,8 @@
 
     <canvas id="canvas-for-ball"  width="400" height="300"></canvas>
 
+    <h3 id="message"></h3> <!-- collision message -->
+
     <script type="text/javascript">
       // Gets a handle to the element with id canvasOne.
       var canvas = document.getElementById("canvas-for-ball");
@@ -50,7 +52,8 @@
         draw() {
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius, this.sAngle, this.eAngle, true);
-            ctx.stroke();
+            ctx.fillStyle = "rgb(255, 150, 200)";
+            ctx.fill();
         }
 
       }
@@ -148,8 +151,8 @@
       }
 
       var b1 = new Ball(50, 30, 3, 3, 20, 0, 0);
-      var paddle1 = new Paddle(20, 20, 10, 0, 2 * Math.PI);
-      var paddle2 = new Paddle(350, 20, 10, 0, 2 * Math.PI);
+      var paddle1 = new Paddle(40, 149, 20, 0, 2 * Math.PI);
+      var paddle2 = new Paddle(350, 149, 20, 0, 2 * Math.PI);
 
       // A function to repeat every time the animation loops.
       function repeatme() {
@@ -157,14 +160,44 @@
 
         paddle1.draw();
         paddle2.draw();
+
         b1.drawBall();
         b1.moveBall();
+
+        collisionDetect();
 
         window.requestAnimationFrame(repeatme);
       }
 
       // Get the animation going.
       repeatme();
+
+      function collisionDetect() {
+        //determine distance between both circle's points
+        var distance1 = Math.sqrt((paddle1.x - b1.x) ** 2 + 
+                       (paddle1.y - b1.y) ** 2);
+
+        //determine the sum of both radius
+        var sumRad1 = paddle1.radius + b1.radius;
+
+        //determine distance between both circle's points
+        var distance2 = Math.sqrt((paddle2.x - b1.x) ** 2 + 
+                       (paddle2.y - b1.y) ** 2);
+
+        //determine the sum of both radius
+        var sumRad2 = paddle2.radius + b1.radius;
+
+        if (distance1 <= sumRad1) {
+            document.getElementById("message").innerText = "Collision Detected 1!";
+        }
+        else if (distance2 <= sumRad2) {
+            document.getElementById("message").innerText = "Collision Detected 2!";
+        }
+        else {
+            document.getElementById("message").innerText = "";
+        }
+
+      }
 
       //calculate position of the canvas DOM element on the page
       var canvasPosition = {
