@@ -28,6 +28,8 @@
 
     <canvas id="canvas-for-ball"  width="400" height="300"></canvas>
 
+    <h3 id="score1">Paddle 1: </h3>
+    <h3 id="score2">Paddle 2: </h3>
     <h3 id="message"></h3> <!-- collision message -->
 
     <script type="text/javascript">
@@ -37,7 +39,6 @@
       var ctx = canvas.getContext("2d");
 
       var angle = 0;
-
 
       class Paddle {
 
@@ -153,6 +154,8 @@
       var b1 = new Ball(50, 30, 3, 3, 20, 0, 0);
       var paddle1 = new Paddle(40, 149, 20, 0, 2 * Math.PI);
       var paddle2 = new Paddle(350, 149, 20, 0, 2 * Math.PI);
+      var score1 = 0;
+      var score2 = 0;
 
       // A function to repeat every time the animation loops.
       function repeatme() {
@@ -172,6 +175,10 @@
       // Get the animation going.
       repeatme();
 
+      function clamp(value, min, max) {
+        return Math.min(Math.max(value, min), max);
+      }
+
       function collisionDetect() {
         //determine distance between both circle's points
         var distance1 = Math.sqrt((paddle1.x - b1.x) ** 2 + 
@@ -189,14 +196,32 @@
 
         if (distance1 <= sumRad1) {
             document.getElementById("message").innerText = "Collision Detected 1!";
+            rebound(1, 0);
+            score1++;
+            document.getElementById("score1").innerText = "Paddle 1: " + score1;
         }
         else if (distance2 <= sumRad2) {
             document.getElementById("message").innerText = "Collision Detected 2!";
+            rebound(0, 1);
+            score2++;
+            document.getElementById("score2").innerText = "Paddle 2: " + score2;
         }
         else {
             document.getElementById("message").innerText = "";
         }
 
+      }
+
+      function rebound (hit1, hit2) {
+        b1.xSpeed = b1.xSpeed * -1;
+        if (hit1 == 1) {
+            b1.x += 20;
+        }
+        if (hit2 == 1) {
+           b1.x -= 20;
+        }
+
+        b1.ySpeed = b1.ySpeed * -1;
       }
 
       //calculate position of the canvas DOM element on the page
@@ -213,7 +238,7 @@
         }
         console.log(mouse);
 
-        paddle.y = mouse.y; //move y coordinates
+        paddle1.y = mouse.y; //move y coordinates
  
       });
 
@@ -270,6 +295,14 @@
         console.log('- arrow key pressed!');
         break;
 		}
+
+        // Clamp paddle1 position
+        paddle1.x = clamp(paddle1.x, paddle1.radius, canvas.width - paddle1.radius);
+        paddle1.y = clamp(paddle1.y, paddle1.radius, canvas.height - paddle1.radius);
+
+        // Clamp paddle2 position
+        paddle2.x = clamp(paddle2.x, paddle2.radius, canvas.width - paddle2.radius);
+        paddle2.y = clamp(paddle2.y, paddle2.radius, canvas.height - paddle2.radius);
 
 	});
 
