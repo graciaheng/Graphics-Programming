@@ -28,8 +28,8 @@
 
     <canvas id="canvas-for-ball"  width="400" height="300"></canvas>
 
-    <h3 id="score1">Paddle 1: </h3>
-    <h3 id="score2">Paddle 2: </h3>
+    <h3 id="score1">Paddle 1: 0</h3>
+    <h3 id="score2">Paddle 2: 0</h3>
     <h3 id="message"></h3> <!-- collision message -->
 
     <script type="text/javascript">
@@ -124,14 +124,15 @@
           //if the ball hits the bottom of the canvas
           if (this.y >= 300 - this.radius){
             this.y = 300 - this.radius; //keep the ball from staying within the canvas
-            this.ySpeed *= -0.9;    //ball moves up only 90%
+            this.ySpeed = this.ySpeed * -1;    //ball moves up only 90%
             this.angle *= -1;
+
           } 
 
           //if ball hits the roof of the canvas
           if (this.y <= 0 + this.radius) {
             this.y = this.radius;
-            this.ySpeed *= -0.9;
+            this.ySpeed = this.ySpeed * -1;
             this.angle *= -1;
           }
 
@@ -140,6 +141,8 @@
             this.x = 400 - this.radius;
             this.xSpeed = this.xSpeed * -1;
             this.angle *= -1;
+            score2--;
+            document.getElementById("score2").innerText = "Paddle 2: " + score2;
           }
 
           //if ball hits left side of canvas
@@ -147,6 +150,8 @@
             this.x = this.radius;
             this.xSpeed = this.xSpeed * -1;
             this.angle *= -1;
+            score1--;
+            document.getElementById("score1").innerText = "Paddle 1: " + score1;
           }
         }
       }
@@ -220,7 +225,6 @@
         if (hit2 == 1) {
            b1.x -= 20;
         }
-
         b1.ySpeed = b1.ySpeed * -1;
       }
 
