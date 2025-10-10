@@ -163,8 +163,26 @@
       // Get the animation going.
       repeatme();
 
+      //calculate position of the canvas DOM element on the page
+      var canvasPosition = {
+        x: canvas.offsetLeft,
+        y: canvas.offsetTop
+      }
+
+      canvas.addEventListener("click", function(event) {
+
+        var mouse = {
+          x: event.clientX - canvasPosition.x,
+          y: event.clientY - canvasPosition.y
+        }
+        console.log(mouse);
+
+        rect1.y = mouse.y; //move y coordinates
+ 
+      });
+
       //keypresses with jQuery
-	  $(document.body).on('keydown', function(e) {
+	   $(document.body).on('keydown', function(e) {
 			console.log(e.which);
 			switch (e.which) {
 
@@ -178,18 +196,6 @@
 			case 39:
         rect1.x++;
 				console.log('right arrow key pressed!');
-				break;
-
-      //key code for up arrow
-      case 38:
-        rect1.y--;
-				console.log('up aarrow key pressed!');
-				break;
-
-			// key code for down arrow
-			case 40:
-        rect1.y++;
-				console.log('down arrow key pressed!');
 				break;
 
       //key code for J / left
