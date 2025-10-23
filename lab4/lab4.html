@@ -169,7 +169,8 @@
         }
       }
 
-      var b1 = new Ball(50, 30, 3, 3, 20, 0, 0);
+      var balls = [new Ball(50, 30, 3, 3, 20)];
+      balls.push(new Ball(50, 30, 3, 3, 20, 0, 0));
       var paddle1 = new Paddle(40, 149, 20, 0, 2 * Math.PI);
       var paddle2 = new Paddle(350, 149, 20, 0, 2 * Math.PI);
       var score1 = 0;
@@ -182,10 +183,12 @@
         paddle1.draw();
         paddle2.draw();
 
-        b1.drawBall();
-        b1.moveBall();
-
-        collisionDetect();
+        for (let i = 0; i < balls.length; i++) {
+          const b = balls[i];
+          b.drawBall();
+          b.moveBall();
+          collisionDetect(b); // pass ball to collision function
+        }
 
         window.requestAnimationFrame(repeatme);
       }
@@ -197,30 +200,30 @@
         return Math.min(Math.max(value, min), max);
       }
 
-      function collisionDetect() {
+      function collisionDetect(b) {
         //determine distance between both circle's points
-        var distance1 = Math.sqrt((paddle1.x - b1.x) ** 2 + 
-                       (paddle1.y - b1.y) ** 2);
+        var distance1 = Math.sqrt((paddle1.x - b.x) ** 2 + 
+                       (paddle1.y - b.y) ** 2);
 
         //determine the sum of both radius
-        var sumRad1 = paddle1.radius + b1.radius;
+        var sumRad1 = paddle1.radius + b.radius;
 
         //determine distance between both circle's points
-        var distance2 = Math.sqrt((paddle2.x - b1.x) ** 2 + 
-                       (paddle2.y - b1.y) ** 2);
+        var distance2 = Math.sqrt((paddle2.x - b.x) ** 2 + 
+                       (paddle2.y - b.y) ** 2);
 
         //determine the sum of both radius
-        var sumRad2 = paddle2.radius + b1.radius;
+        var sumRad2 = paddle2.radius + b.radius;
 
         if (distance1 <= sumRad1) {
             document.getElementById("message").innerText = "Collision Detected 1!";
-            rebound(1, 0);
+            rebound(b, 1, 0);
             score1++;
             document.getElementById("score1").innerText = "Paddle 1: " + score1;
         }
         else if (distance2 <= sumRad2) {
             document.getElementById("message").innerText = "Collision Detected 2!";
-            rebound(0, 1);
+            rebound(b, 0, 1);
             score2++;
             document.getElementById("score2").innerText = "Paddle 2: " + score2;
         }
@@ -230,15 +233,15 @@
 
       }
 
-      function rebound (hit1, hit2) {
-        b1.xSpeed = b1.xSpeed * -1;
+      function rebound (b, hit1, hit2) {
+        b.xSpeed = b.xSpeed * -1;
         if (hit1 == 1) {
-            b1.x += 20;
+            b.x += 20;
         }
         if (hit2 == 1) {
-           b1.x -= 20;
+           b.x -= 20;
         }
-        b1.ySpeed = b1.ySpeed * -1;
+        b.ySpeed = b.ySpeed * -1;
       }
 
       //calculate position of the canvas DOM element on the page
@@ -260,58 +263,47 @@
       });
 
       //keypresses with jQuery
-	   $(document.body).on('keydown', function(e) {
+	  $(document.body).on('keydown', function(e) {
 		console.log(e.which);
 		switch (e.which) {
 
 		// key code for left arrow
-		case 37:
-        paddle1.x--;
-		console.log('left arrow key pressed!');
-		break;
+		case 37: paddle1.x--; break;
 
 	    // key code for right arrow
-		case 39:
-        paddle1.x++;
-		console.log('right arrow key pressed!');
-		break;
+		case 39: paddle1.x++; break;
 
         //key code for J / left
-        case 74:
-        paddle2.x--;
-		console.log('J arrow key pressed!');
-		break;
+    case 74: paddle2.x--; break;
 
 	    // key code for L / right
-		case 76:
-        paddle2.x++;
-		console.log('L arrow key pressed!');
-		break;
+		case 76: paddle2.x++; break;
 
         //key code for I / up
-        case 73:
-        paddle2.y--;
-		console.log('I arrow key pressed!');
-		break;
+    case 73: paddle2.y--; break;
 
 	    // key code for K / down
-	    case 75:
-        paddle2.y++;
-		console.log('K arrow key pressed!');
-		break;
+	  case 75: paddle2.y++; break;
 
         //key code for + 
-        case 187:
-        b1.rotation += 0.01; //update speed slowly
-        console.log('+ arrow key pressed!');
-        break;
+    case 187: b1.rotation += 0.01; break; //update speed slowly
 
         //key code for -
-        case 189:
-        b1.rotation -= 0.01; //update speed slowly
-        console.log('- arrow key pressed!');
+    case 189: b1.rotation -= 0.01; break; //update speed slowlybreak;
+		
+    // N key → Add new match ball!
+    case 78:
+        const newBall = new Ball(
+          Math.random() * canvas.width,
+          Math.random() * canvas.height / 2,
+          (Math.random() - 0.5) * 6,
+          (Math.random() - 0.5) * 6,
+          20
+        );
+        balls.push(newBall);
+        console.log("New ball added! Total balls:", balls.length);
         break;
-		}
+  }
 
         // Clamp paddle1 position
         paddle1.x = clamp(paddle1.x, paddle1.radius, canvas.width - paddle1.radius);
