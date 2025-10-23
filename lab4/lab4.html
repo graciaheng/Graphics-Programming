@@ -53,8 +53,19 @@
         draw() {
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius, this.sAngle, this.eAngle, true);
-            ctx.fillStyle = "rgb(255, 150, 200)";
+            // create a radial gradient for the Pac-Man
+            const gradient = ctx.createRadialGradient(
+            this.x, this.y, this.radius * 0.2, // inner circle
+            this.x, this.y, this.radius        // outer circle
+            );
+            gradient.addColorStop(0, "#ffb6c1");  // light pink center
+            gradient.addColorStop(1, "#ff1493");  // deep pink edge
+
+            ctx.fillStyle = gradient;
             ctx.fill();
+            ctx.strokeStyle = "#ff1493";
+            ctx.lineWidth = 2;
+            ctx.stroke();
         }
 
       }
@@ -105,6 +116,8 @@
           ctx.lineTo(x2,y2); 
 
           ctx.stroke();
+          ctx.fillStyle = "rgb(255, 150, 200)";
+          ctx.fill();
 
           ctx.restore();
         }
