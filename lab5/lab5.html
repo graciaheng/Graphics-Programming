@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <head>
+    <meta charset="UTF-8">
+    <title>Lab 5</title>
+    <style type="text/css">
+    </style>
+ </head>
+ <body>
+    <h1>Gracia</h1>
+    <script type="text/javascript">
+    
+    //implement scene - create a three.js
+    var scene = new THREE.Scene();
+    
+    //create a camera with specified properties
+    var camera = new THREE.perspectiveCamera(76, window.innerWidth / window.innerHeight, 0.1, 1000);
+    //set camera position
+
+    //implement renderer - create a WebGL renderer for rendering the scene
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    </script>
+ </body>
+</html>
