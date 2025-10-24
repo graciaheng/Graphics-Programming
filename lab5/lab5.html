@@ -37,11 +37,12 @@
 
     class Sphere {
 
-        constructor(radius, widthSphere, heightSphere, xSpeed) {
+        constructor(radius, widthSphere, heightSphere, xSpeed, ySpeed) {
             this.radius = radius;
             this.widthSphere = widthSphere;
             this.heightSphere = heightSphere;
             this.xSpeed = xSpeed;
+            this.ySpeed = ySpeed;
             this.sphere = null;
         }
 
@@ -61,10 +62,12 @@
         moveSphere(){
             if (!this.sphere) return;
             //rotate sphere
-            this.sphere.rotation.x += 0.01;
-            this.sphere.rotation.y += 0.01;
-
-            this.sphere.position.x += this.xSpeed;
+            this.sphere.rotation.x += 0.1;
+            this.sphere.rotation.y += 0.1;
+            //this.sphere.position.x += this.xSpeed;
+            this.ySpeed += -0.10;
+            this.sphere.position.y += this.ySpeed;
+            //this.ySpeed = this.ySpeed * -1;
 
             //if sphere hits right side of canvas
             const limit = 50;
@@ -78,18 +81,31 @@
                 //this.x = radius;
                 this.xSpeed = this.xSpeed * -1;
             }
+
+            const planeY = -30;
+            //if sphere hits bottom of canvas
+            if (this.sphere.position.y - this.radius <= planeY) { //has the bottom of the sphere hit the plane
+                this.sphere.position.y = planeY + this.radius;
+                this.ySpeed = this.ySpeed * -1;
+            }
+
+            //if sphere hits ceiling of canvas
+            /* if (this.sphere.position.y + this.radius <= 500) {
+                this.sphere.position.y = height - this.radius;
+                this.ySpeed = this.ySpeed * -1;
+            } */
         }
 
     }
 
-    var sphere1 = new Sphere(15, 32, 20, 1);
+    var sphere1 = new Sphere(13, 32, 20, 1, 1);
     sphere1.drawSphere();
     
     //added plane
     const geometry = new THREE.PlaneGeometry( 85, 55 );
     const material = new THREE.MeshLambertMaterial( {color: 0xA2A2A2, side: THREE.DoubleSide} );
     const plane = new THREE.Mesh( geometry, material );
-    plane.position.y = -20;
+    plane.position.y = -30;
     plane.rotation.x = -Math.PI / 2;
     scene.add( plane );
 
