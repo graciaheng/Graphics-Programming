@@ -21,32 +21,71 @@
     
     //implement scene - create a three.js
     var scene = new THREE.Scene();
-    var width = 800;
-    var height = 800;
+    var width = 500;
+    var height = 500;
     //create a camera with specified properties
     var camera = new THREE.PerspectiveCamera(76, width / height, 0.1, 1000);
     //set camera position
     camera.position.z = 80;
     //implement renderer - create a WebGL renderer for rendering the scene
-    var canvas = document.getElementById("canvas");
     var renderer = new THREE.WebGLRenderer();
     renderer.setSize(width, height);
     document.body.appendChild(renderer.domElement);
 
-    const geometry = new THREE.SphereGeometry( 15, 32, 16 );
-    //const material = new THREE.MeshBasicMaterial( { color: 0xffff00, wireframe: false} ); 
-    const material = new THREE.MeshLambertMaterial( { color: 0x8E3CE4} );
-    const sphere = new THREE.Mesh( geometry, material ); 
-    scene.add( sphere );
+    class Sphere {
 
+        constructor(radius, widthSphere, heightSphere, xSpeed) {
+            this.radius = radius;
+            this.widthSphere = widthSphere;
+            this.heightSphere = heightSphere;
+            this.xSpeed = xSpeed;
+            this.sphere = null;
+        }
+
+        drawSphere(){
+            const geometry = new THREE.SphereGeometry( 
+                this.radius, 
+                this.widthSphere, 
+                this.heightSphere 
+            );
+            //const material = new THREE.MeshBasicMaterial( { color: 0xffff00, wireframe: false} ); 
+            const material = new THREE.MeshLambertMaterial( { color: 0x8E3CE4} );
+            this.sphere = new THREE.Mesh( geometry, material ); 
+            scene.add( this.sphere );
+        }
+
+        moveSphere(){
+            if (!this.sphere) return;
+            //rotate sphere
+            this.sphere.rotation.x += 0.01;
+            this.sphere.rotation.y += 0.01;
+
+            this.sphere.position.x += this.xSpeed;
+
+            //if sphere hits right side of canvas
+            const limit = 50;
+            if (this.sphere.position.x >= limit - this.radius / 2) {
+                //this.x = 400 - radius;
+                this.xSpeed = this.xSpeed * -1;
+            }
+
+            //if sphere hits left side of canvas
+            if (this.sphere.position.x <= -limit + this.radius / 2) {
+                //this.x = radius;
+                this.xSpeed = this.xSpeed * -1;
+            }
+        }
+
+    }
+
+    var sphere1 = new Sphere(15, 32, 16, 1);
+    sphere1.drawSphere();
     //call a render loop to display 3d
     var repeatMe = function () {
         renderer.render(scene, camera);
         requestAnimationFrame(repeatMe);
 
-        //rotate sphere
-        sphere.rotation.x += 0.01;
-        sphere.rotation.y += 0.01;
+        sphere1.moveSphere();
     };
     
     repeatMe();
