@@ -30,6 +30,9 @@
     //implement renderer - create a WebGL renderer for rendering the scene
     var renderer = new THREE.WebGLRenderer();
     renderer.setSize(width, height);
+    //added shadows
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap; //to antialias the shadow
     document.body.appendChild(renderer.domElement);
 
     class Sphere {
@@ -49,8 +52,9 @@
                 this.heightSphere 
             );
             //const material = new THREE.MeshBasicMaterial( { color: 0xffff00, wireframe: false} ); 
-            const material = new THREE.MeshLambertMaterial( { color: 0x8E3CE4} );
+            const material = new THREE.MeshLambertMaterial( { color: 0xFE788D} );
             this.sphere = new THREE.Mesh( geometry, material ); 
+            this.sphere.position.z = 10;
             scene.add( this.sphere );
         }
 
@@ -78,8 +82,17 @@
 
     }
 
-    var sphere1 = new Sphere(15, 32, 16, 1);
+    var sphere1 = new Sphere(15, 32, 20, 1);
     sphere1.drawSphere();
+    
+    //added plane
+    const geometry = new THREE.PlaneGeometry( 85, 55 );
+    const material = new THREE.MeshLambertMaterial( {color: 0xA2A2A2, side: THREE.DoubleSide} );
+    const plane = new THREE.Mesh( geometry, material );
+    plane.position.y = -20;
+    plane.rotation.x = -Math.PI / 2;
+    scene.add( plane );
+
     //call a render loop to display 3d
     var repeatMe = function () {
         renderer.render(scene, camera);
@@ -90,9 +103,18 @@
     
     repeatMe();
 
+    //added light source
     var spotLight = new THREE.SpotLight(0xffffff);
     spotLight.position.set(50, 100, 150);
     scene.add(spotLight);
+
+    sphere1.sphere.castShadow = true;
+    plane.receiveShadow = true;
+    spotLight.castShadow = true;
+    //add camera helper to illustrate source of light
+    var helper = new THREE.CameraHelper( spotLight.shadow.camera );
+    scene.add( helper );
+
 
     </script>
  </body>
