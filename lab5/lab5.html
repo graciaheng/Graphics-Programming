@@ -31,7 +31,7 @@
     var camera = new THREE.PerspectiveCamera(76, width / height, 0.1, 1000);
     
     //set camera position
-    camera.position.z = 90;
+    camera.position.z = 60;
 
     //to see the cube
     //camera.position.y = 50;
@@ -66,7 +66,7 @@
                 this.heightSphere 
             );
             //const material = new THREE.MeshBasicMaterial( { color: 0xffff00, wireframe: false} ); 
-            const material = new THREE.MeshLambertMaterial( { color: 0xFE788D} );
+            const material = new THREE.MeshLambertMaterial( { color: 0xFE788D, wireframe: true} ); //added wireframe on top
             this.sphere = new THREE.Mesh( geometry, material ); 
             this.sphere.position.x = this.x;
             this.sphere.position.y = this.y;
@@ -77,8 +77,8 @@
         moveSphere(){
             if (!this.sphere) return;
             //rotate sphere
-            this.sphere.rotation.x += 0.1;
-            this.sphere.rotation.y += 0.1;
+            //this.sphere.rotation.x += 0.001;
+            //this.sphere.rotation.y += 0.001;
             this.ySpeed += -0.10;
             this.sphere.position.y += this.ySpeed;
 
@@ -122,7 +122,7 @@
 
     }
 
-    //adjust transparent levels
+    //sort so that objects can appear behind the transparent object
     renderer.setTransparentSort( (a,b) => a.z-b.z );
 
     var sphere1 = new Sphere(15, 10, 5, 32, 20, 1, 1);
