@@ -26,13 +26,21 @@
     var scene = new THREE.Scene();
     var width = 500;
     var height = 500;
+
     //create a camera with specified properties
     var camera = new THREE.PerspectiveCamera(76, width / height, 0.1, 1000);
+    
     //set camera position
-    camera.position.z = 80;
+    camera.position.z = 90;
+
+    //to see the cube
+    //camera.position.y = 50;
+    //camera.rotation.x = -0.70;
+    
     //implement renderer - create a WebGL renderer for rendering the scene
     var renderer = new THREE.WebGLRenderer();
     renderer.setSize(width, height);
+    
     //added shadows
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap; //to antialias the shadow
@@ -62,7 +70,7 @@
             this.sphere = new THREE.Mesh( geometry, material ); 
             this.sphere.position.x = this.x;
             this.sphere.position.y = this.y;
-            this.sphere.position.z = 10;
+            this.sphere.position.z = 20;
             scene.add( this.sphere );
         }
 
@@ -71,11 +79,10 @@
             //rotate sphere
             this.sphere.rotation.x += 0.1;
             this.sphere.rotation.y += 0.1;
-            //this.sphere.position.x += this.xSpeed;
             this.ySpeed += -0.10;
             this.sphere.position.y += this.ySpeed;
-            //this.ySpeed = this.ySpeed * -1;
 
+            /*
             //if sphere hits right side of canvas
             const limit = 50;
             if (this.sphere.position.x >= limit - this.radius / 2) {
@@ -88,16 +95,26 @@
                 //this.x = radius;
                 this.xSpeed = this.xSpeed * -1;
             }
+                */
 
+            /*
             const planeY = -30;
-            //if sphere hits bottom of canvas
+            //if sphere hits bottom of plane
             if (this.sphere.position.y - this.radius <= planeY) { //has the bottom of the sphere hit the plane
                 this.sphere.position.y = planeY + this.radius;
                 this.ySpeed = this.ySpeed * -1;
+            } */
+
+            const cubeY = -20;
+            //if sphere hits bottom of canvas
+            if (this.sphere.position.y - this.radius <= cubeY) { //has the bottom of the sphere hit the plane
+                this.sphere.position.y = cubeY + this.radius;
+                this.ySpeed = this.ySpeed * -1;
             }
 
+            /*
             //if sphere hits ceiling of canvas
-            /* if (this.sphere.position.y + this.radius <= 500) {
+            if (this.sphere.position.y + this.radius <= 500) {
                 this.sphere.position.y = height - this.radius;
                 this.ySpeed = this.ySpeed * -1;
             } */
@@ -105,19 +122,35 @@
 
     }
 
-    var sphere1 = new Sphere(20, 10, 13, 32, 20, 1, 1);
+    //adjust transparent levels
+    renderer.setTransparentSort( (a,b) => a.z-b.z );
+
+    var sphere1 = new Sphere(15, 10, 5, 32, 20, 1, 1);
     sphere1.drawSphere();
 
-    var sphere2 = new Sphere(-20, 10, 13, 32, 20, 1, 1);
+    var sphere2 = new Sphere(-15, 10, 5, 32, 20, 1, 1);
     sphere2.drawSphere();
-    
-    //added plane
-    const geometry = new THREE.PlaneGeometry( 85, 55 );
-    const material = new THREE.MeshLambertMaterial( {color: 0xA2A2A2, side: THREE.DoubleSide} );
-    const plane = new THREE.Mesh( geometry, material );
+
+    //added cube
+    const cube_geometry = new THREE.BoxGeometry( 50, 50, 50 );
+    const cube_material = new THREE.MeshBasicMaterial ({
+        color: 0x3399ff,
+        opacity: 0.5,
+        transparent: true
+    });
+
+    const cube = new THREE.Mesh( cube_geometry, cube_material );
+    cube.position.y = 5;
+    cube.position.z = 10;
+    scene.add( cube );
+
+    //added plane 
+    const plane_geometry = new THREE.PlaneGeometry( 85, 55 );
+    const plane_material = new THREE.MeshLambertMaterial({ color: 0xA2A2A2, side: THREE.DoubleSide});
+    const plane = new THREE.Mesh( plane_geometry, plane_material );
     plane.position.y = -30;
     plane.rotation.x = -Math.PI / 2;
-    scene.add( plane );
+    scene.add ( plane );
 
     //call a render loop to display 3d
     var repeatMe = function () {
@@ -144,6 +177,7 @@
             score1++;
             document.getElementById("score1").innerText = "Paddle 1: " + score1;
         }
+
         else {
             document.getElementById("message").innerText = "";
         }
@@ -155,7 +189,10 @@
     spotLight.position.set(50, 100, 150);
     scene.add(spotLight);
 
+    //add shadows
     sphere1.sphere.castShadow = true;
+    sphere2.sphere.castShadow = true;
+    //cube.receiveShadow = true; won't work
     plane.receiveShadow = true;
     spotLight.castShadow = true;
     //add camera helper to illustrate source of light
